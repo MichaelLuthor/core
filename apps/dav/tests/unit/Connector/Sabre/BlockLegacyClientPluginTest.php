@@ -77,7 +77,7 @@ class BlockLegacyClientPluginTest extends TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->with('minimum.supported.desktop.version', '2.0.0')
+			->with('minimum.supported.desktop.version', '2.2.4')
 			->will($this->returnValue('1.7.0'));
 
 		$this->blockLegacyClientVersionPlugin->beforeHandler($request);
@@ -112,7 +112,7 @@ class BlockLegacyClientPluginTest extends TestCase {
 		$this->config
 			->expects($this->once())
 			->method('getSystemValue')
-			->with('minimum.supported.desktop.version', '2.0.0')
+			->with('minimum.supported.desktop.version', '2.2.4')
 			->will($this->returnValue('1.7.0'));
 
 		$this->blockLegacyClientVersionPlugin->beforeHandler($request);
