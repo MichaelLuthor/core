@@ -134,8 +134,11 @@ class TemplateLayout extends \OC_Template {
 		if ($this->config->getSystemValue('installed', false) && $renderAs != 'error') {
 			$this->append( 'jsfiles', \OC::$server->getURLGenerator()->linkToRoute('js_config', ['v' => self::$versionHash]));
 		}
+		
+		$cdnServers = $this->config->getSystemValue('cdn.servers', array());
+		$scriptCDN = empty($cdnServers) ? null : (isset($cdnServers['js'])?$cdnServers['js']:$cdnServers[0]);
 		foreach($jsFiles as $info) {
-			$web = $info[1];
+			$web = ( null===$scriptCDN ) ? $info[1] : '//'.$scriptCDN;
 			$file = $info[2];
 			$this->append( 'jsfiles', $web.'/'.$file . '?v=' . self::$versionHash);
 		}
@@ -144,8 +147,9 @@ class TemplateLayout extends \OC_Template {
 		$cssFiles = self::findStylesheetFiles(\OC_Util::$styles);
 		$this->assign('cssfiles', []);
 		$this->assign('printcssfiles', []);
+		$cssCDN = null; empty($cdnServers) ? null : (isset($cdnServers['css'])?$cdnServers['css']:$cdnServers[0]);
 		foreach($cssFiles as $info) {
-			$web = $info[1];
+			$web = ( null===$cssCDN ) ? $info[1] : '//'.$cssCDN;
 			$file = $info[2];
 
 			if (substr($file, -strlen('print.css')) === 'print.css') {
