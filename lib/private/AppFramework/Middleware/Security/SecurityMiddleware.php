@@ -168,7 +168,20 @@ class SecurityMiddleware extends Middleware {
 
 		$defaultPolicy = $this->contentSecurityPolicyManager->getDefaultPolicy();
 		$defaultPolicy = $this->contentSecurityPolicyManager->mergePolicies($defaultPolicy, $policy);
-
+		$systemConfig = \OC::$server->getSystemConfig();
+		$cdnServers = $systemConfig->getValue('cdn.servers', array());
+		foreach ( $cdnServers as $cdnServer ) {
+			$defaultPolicy->addAllowedScriptDomain($cdnServer)
+				->addAllowedStyleDomain($cdnServer)
+				->addAllowedObjectDomain($cdnServer)
+				->addAllowedMediaDomain($cdnServer)
+				->addAllowedImageDomain($cdnServer)
+				->addAllowedFrameDomain($cdnServer)
+				->addAllowedFontDomain($cdnServer)
+				->addAllowedConnectDomain($cdnServer)
+				->addAllowedChildSrcDomain($cdnServer);
+		}
+		
 		$response->setContentSecurityPolicy($defaultPolicy);
 
 		return $response;
