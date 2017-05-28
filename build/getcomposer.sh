@@ -15,5 +15,5 @@ fi
 
 php composer-setup.php --quiet
 RESULT=$?
-rm composer-setup.php
+# rm composer-setup.php
 exit $RESULT
